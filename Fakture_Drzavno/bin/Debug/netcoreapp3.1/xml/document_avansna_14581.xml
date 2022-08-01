@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021</cbc:CustomizationID>
+  <cbc:ID>AV-2</cbc:ID>
+  <cbc:IssueDate>2022-08-01</cbc:IssueDate>
+  <cbc:DueDate>2022-02-24</cbc:DueDate>
+  <cbc:InvoiceTypeCode>386</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>RSD</cbc:DocumentCurrencyCode>
+  <cac:InvoicePeriod>
+    <cbc:DescriptionCode>432</cbc:DescriptionCode>
+  </cac:InvoicePeriod>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="9948">102265706</cbc:EndpointID>
+      <cac:PartyName>
+        <cbc:Name>GRADSKA OPŠTINA NOVI BEOGRAD</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:CityName>Novi Beograd</cbc:CityName>
+        <cac:Country>
+          <cbc:IdentificationCode>RS</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>RS102265706</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>GRADSKA OPŠTINA NOVI BEOGRAD</cbc:RegistrationName>
+        <cbc:CompanyID>07047541</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cbc:EndpointID schemeID="9948">100002887</cbc:EndpointID>
+      <cac:PartyIdentification>
+        <cbc:ID>JBKJS:44</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>TELEKOM SRBIJA A.D.</cbc:Name>
+      </cac:PartyName>
+      <cac:PostalAddress>
+        <cbc:StreetName>Takovska 2</cbc:StreetName>
+        <cbc:CityName>BEOGRAD</cbc:CityName>
+        <cbc:PostalZone>11000</cbc:PostalZone>
+        <cac:Country>
+          <cbc:IdentificationCode>RS</cbc:IdentificationCode>
+        </cac:Country>
+      </cac:PostalAddress>
+      <cac:PartyTaxScheme>
+        <cbc:CompanyID>RS100002887</cbc:CompanyID>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:PartyTaxScheme>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>TELEKOM SRBIJA A.D.</cbc:RegistrationName>
+        <cbc:CompanyID>171625543</cbc:CompanyID>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:PaymentMeans>
+    <cbc:PaymentMeansCode>42</cbc:PaymentMeansCode>
+  </cac:PaymentMeans>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="RSD">28220.93</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="RSD">141104.64</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="RSD">28220.93</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID schemeID="UN/ECE 5305" schemeAgencyID="6" schemeURI="http://www.unece.org/trade/untdid/d07a/tred/tred5305.htm">S</cbc:ID>
+        <cbc:Percent>20.00</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="RSD">141104.64</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="RSD">141104.64</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="RSD">169325.57</cbc:TaxInclusiveAmount>
+    <cbc:AllowanceTotalAmount currencyID="RSD">0.00</cbc:AllowanceTotalAmount>
+    <cbc:PrepaidAmount currencyID="RSD">0.00</cbc:PrepaidAmount>
+    <cbc:PayableAmount currencyID="RSD">169325.57</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="H87">1.00</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="RSD">141104.64</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Name>Zakup dela krovne terase u bloku 45, Jurija Gagarina 221, za period 01.01.-31.03..2022.godine</cbc:Name>
+      <cac:ClassifiedTaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Percent>20.00</cbc:Percent>
+        <cac:TaxScheme>
+          <cbc:ID>VAT</cbc:ID>
+        </cac:TaxScheme>
+      </cac:ClassifiedTaxCategory>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="RSD">141104.64</cbc:PriceAmount>
+    </cac:Price>
+  </cac:InvoiceLine>
+</Invoice>
