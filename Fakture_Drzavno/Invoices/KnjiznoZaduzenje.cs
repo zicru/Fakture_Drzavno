@@ -1,18 +1,17 @@
-﻿using Fakture_Drzavno.Domain;
-using Fakture_Drzavno.Invoices.Elements;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Fakture_Drzavno.Domain;
+using Fakture_Drzavno.Invoices.Elements;
 
 namespace Fakture_Drzavno.Invoices
 {
-    internal class KnjiznoOdobrenje
-    {
+	public class KnjiznoZaduzenje
+	{
         public static async Task<XmlDocument> Generate(string invoiceNumber)
         {
             var invoice = await InvoiceData.GetDataAsync(invoiceNumber);
@@ -25,30 +24,33 @@ namespace Fakture_Drzavno.Invoices
             document.InsertBefore(xmlDeclaration, root);
 
             // Credit Note
-            XmlElement rootElement = document.CreateElement(string.Empty, "CreditNote", string.Empty);
+            XmlElement rootElement = document.CreateElement(string.Empty, "Invoice", string.Empty);
             rootElement.SetAttribute("xmlns:cec", "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2");
             rootElement.SetAttribute("xmlns:cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
             rootElement.SetAttribute("xmlns:cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
             rootElement.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             rootElement.SetAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
             rootElement.SetAttribute("xmlns:sbt", "http://mfin.gov.rs/srbdt/srbdtext");
-            rootElement.SetAttribute("xmlns", "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2");
+            rootElement.SetAttribute("xmlns", "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2");
             document.AppendChild(rootElement);
 
             // CustomizationID
             InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "CustomizationID", Value = "urn:cen.eu:en16931:2017#compliant#urn:mfin.gov.rs:srbdt:2021" });
 
-            // Broj avansnog racuna
+            // Broj knjiznog zaduzenja
             InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "ID", Value = invoice.InvoiceID });
 
             // Datum izdavanja racuna
             InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "IssueDate", Value = invoice.InvoiceIssueDate.ToString("yyyy-MM-dd") });
 
+            // Datum valute ( verovatno )
+            InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "DueDate", Value = invoice.InvoiceIssueDate.ToString("yyyy-MM-dd") });
+
             // Medjunarodna oznaka racuna - 381?
-            InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "CreditNoteTypeCode", Value = invoice.InvoiceTypeCode.ToString() });
+            InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "InvoiceTypeCode", Value = invoice.InvoiceTypeCode.ToString() });
 
             // Napomena na nivou dokumenta / NULLABLE
-            InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "Note", Value = invoice.DocumentNote });
+            //InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "Note", Value = invoice.DocumentNote });
 
             // Novcana valuta - za dinar je RSD
             InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "DocumentCurrencyCode", Value = invoice.DocumentCurrencyCode });
@@ -503,6 +505,6 @@ namespace Fakture_Drzavno.Invoices
             // Optionally save for testing
             return document;
         }
-
     }
 }
+
