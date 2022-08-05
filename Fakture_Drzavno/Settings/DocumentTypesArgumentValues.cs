@@ -8,7 +8,8 @@ namespace Fakture_Drzavno.Settings
     {
         public const string AVANSNA_FAKTURA = "avansna";
         public const string FAKTURA = "faktura";
-        public const string KNJIZNO_ODOBRENJE = "knjizno";
+        public const string KNJIZNO_ODOBRENJE = "odobrenje";
+        public const string KNJIZNO_ZADUZENJE = "zaduzenje";
         public const string KONACNA_FAKTURA = "konacna";
         public const string TEST_FAKTURA = "test";
 
@@ -17,6 +18,7 @@ namespace Fakture_Drzavno.Settings
             AVANSNA_FAKTURA,
             FAKTURA,
             KNJIZNO_ODOBRENJE,
+            KNJIZNO_ZADUZENJE,
             KONACNA_FAKTURA,
             TEST_FAKTURA
         };

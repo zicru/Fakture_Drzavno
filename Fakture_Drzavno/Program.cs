@@ -85,6 +85,9 @@ namespace Fakture_Drzavno
                         case DocumentTypesArgumentValues.KNJIZNO_ODOBRENJE:
                             xmlDocument = await KnjiznoOdobrenje.Generate(mainArgument);
                             break;
+                        case DocumentTypesArgumentValues.KNJIZNO_ZADUZENJE:
+                            xmlDocument = await KnjiznoZaduzenje.Generate(mainArgument);
+                            break;
                         case DocumentTypesArgumentValues.KONACNA_FAKTURA:
                             xmlDocument = await KonacnaFaktura.Generate(mainArgument);
                             break;
