@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fakture_Drzavno.Contracts.Models
+namespace Fakture_Drzavno.Contracts.Responses
 {
     internal class IssueInvoiceResponse
     {

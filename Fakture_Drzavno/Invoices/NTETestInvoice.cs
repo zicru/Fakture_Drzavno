@@ -570,10 +570,11 @@ namespace Fakture_Drzavno.Invoices
             }
 
             var saveXml = Boolean.Parse(ConfigurationManager.AppSettings.Get("SaveXML"));
+            var xmlLocation = ConfigurationManager.AppSettings.Get("XMLSavingLocation");
+
             if (saveXml)
             {
-                document.Save(Directory.GetCurrentDirectory() + $"//document_faktura_{invoice.InternalInvoiceID}.xml");
-
+                document.Save(xmlLocation + $"/document_faktura_{invoice.InternalInvoiceID}.xml");
             }
             return document;
         }

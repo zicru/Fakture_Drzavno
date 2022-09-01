@@ -252,6 +252,11 @@ namespace Fakture_Drzavno.Domain
 
         // Da li da se registruje u CRF
         public string RegisterToCRF { get; set; }
+        
+        public string? BillingReferenceID { get; set; }
+
+        public DateTime? BillingReferenceIssueDate { get; set; }
+
 
 
         // Porezi

@@ -48,8 +48,8 @@ namespace Fakture_Drzavno.Invoices
             // Medjunarodna oznaka racuna
             InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "InvoiceTypeCode", Value = invoice.InvoiceTypeCode.ToString() });
 
-            // Napomena na nivou dokumenta / NULLABLE
-            InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "Note", Value = invoice.DocumentNote });
+            // Podaci o uslovima placanja
+            InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "Note", Value = invoice.DocumentNote.ToString() });
 
             // Novcana valuta - za dinar je RSD
             InvoiceCreator.CreateSimpleElement(ref document, ref rootElement, new SimpleInvoiceElement { Name = "DocumentCurrencyCode", Value = invoice.DocumentCurrencyCode });
@@ -499,9 +499,11 @@ namespace Fakture_Drzavno.Invoices
 
             // Optionally save for testing
             var saveXml = Boolean.Parse(ConfigurationManager.AppSettings.Get("SaveXML"));
+            var xmlLocation = ConfigurationManager.AppSettings.Get("XMLSavingLocation");
+
             if (saveXml)
             {
-                document.Save(Directory.GetCurrentDirectory() + $"//xml/document_avansna_{invoice.InternalInvoiceID}.xml");
+                document.Save(xmlLocation + $"document_avansna_{invoice.InternalInvoiceID}.xml");
             }
             return document;
         }

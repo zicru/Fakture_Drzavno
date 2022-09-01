@@ -98,6 +98,8 @@ namespace Fakture_Drzavno.Domain
                 $",[FilePath2]" +
                 $",[FilePath3]" +
                 $",[RegistertoCRF]" +
+                $",[billingReferenceID]" +
+                $",[billingReferenceIssueDate]" +
                 $" FROM [dbo].[{EInvoice.VIEW_NAME}] WHERE idFakture IN ({internalInvoiceID})";
 
             var Get_Invoice_Items_Data = $"SELECT [idfakture]" +
@@ -238,6 +240,8 @@ namespace Fakture_Drzavno.Domain
                 SecondFilePath = Convert.IsDBNull(dt.Rows[0].ItemArray[75]) ? null : Convert.ToString(dt.Rows[0].ItemArray[75]),
                 ThirdFilePath = Convert.IsDBNull(dt.Rows[0].ItemArray[76]) ? null : Convert.ToString(dt.Rows[0].ItemArray[76]),
                 RegisterToCRF = Convert.IsDBNull(dt.Rows[0].ItemArray[77]) ? "Auto" : Convert.ToString(dt.Rows[0].ItemArray[77]),
+                BillingReferenceID = Convert.IsDBNull(dt.Rows[0].ItemArray[78]) ? null : Convert.ToString(dt.Rows[0].ItemArray[78]),
+                BillingReferenceIssueDate = Convert.IsDBNull(dt.Rows[0].ItemArray[79]) ? (DateTime?)null : Convert.ToDateTime(dt.Rows[0].ItemArray[79])
             };
 
             var invoiceItemsResults = new List<EInvoiceItem>();

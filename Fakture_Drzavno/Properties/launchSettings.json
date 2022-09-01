@@ -2,7 +2,7 @@
   "profiles": {
     "Fakture_Drzavno": {
       "commandName": "Project",
-      "commandLineArgs": "15168"
+      "commandLineArgs": "263292 -o istatus"
     }
   }
 }

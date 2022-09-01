@@ -1,9 +1,11 @@
 ﻿using Fakture_Drzavno.Contracts;
-using Fakture_Drzavno.Contracts.Models;
+using Fakture_Drzavno.Contracts.Requests;
+using Fakture_Drzavno.Contracts.Responses;
 using Fakture_Drzavno.Domain;
 using Fakture_Drzavno.Invoices;
 using Fakture_Drzavno.Settings;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
@@ -44,16 +46,16 @@ namespace Fakture_Drzavno
             }
 
             // Document type checking
-            if (!hasDocumentTypeOption && operation != OperationsArgumentValues.STATUS_IZDATE_FAKTURE)
+            if (!hasDocumentTypeOption && (operation != OperationsArgumentValues.STATUS_IZDATE_FAKTURE && operation != OperationsArgumentValues.PROMENA_STATUSA_NA_DAN))
             {
                 Console.WriteLine($"Nije uneta opcija za tip fakture (-t). Podrazumevan tip \"faktura\"");
                 documentType = "faktura";
             }
 
             // Add check if its the right type
-            if (!DocumentTypesArgumentValues.Values.Contains(documentType) && operation != OperationsArgumentValues.STATUS_IZDATE_FAKTURE)
+            if (!DocumentTypesArgumentValues.Values.Contains(documentType) && (operation != OperationsArgumentValues.STATUS_IZDATE_FAKTURE && operation != OperationsArgumentValues.PROMENA_STATUSA_NA_DAN))
             {
-                Console.Error.WriteLine($"Vrednost opcije dokumenta ne postoji. Moguce vrednosti: {DocumentTypesArgumentValues.Values.Aggregate((prev, next) => $"{prev}, {next}")}");
+                Console.Error.WriteLine($"Vrednost tipa dokumenta ne postoji. Moguce vrednosti: {DocumentTypesArgumentValues.Values.Aggregate((prev, next) => $"{prev}, {next}")}");
                 return;
             }
 
@@ -95,7 +97,7 @@ namespace Fakture_Drzavno
                             xmlDocument = await NTETestInvoice.Generate();
                             break;
                         default:
-                            Console.Error.WriteLine($"Vrednost opcije dokumenta ne postoji. Moguce vrednosti: {DocumentTypesArgumentValues.Values.Aggregate((prev, next) => $"{prev}, {next}")}");
+                            Console.Error.WriteLine($"Vrednost tipa dokumenta ne postoji. Moguce vrednosti: {DocumentTypesArgumentValues.Values.Aggregate((prev, next) => $"{prev}, {next}")}");
                             errors = true;
                             break;
                     }
@@ -156,7 +158,7 @@ namespace Fakture_Drzavno
 
                     // THE GET
                     var statusResponse = await client.GetAsync(statusRequest.URL);
-                    var statusSentAtUtc = DateTime.UtcNow;
+                    var statusSentAtUtc = DateTime.Now;
 
                     var statusResponseContents = await statusResponse.Content.ReadAsStringAsync();
                     Console.WriteLine($"StatusCode: {statusResponse.StatusCode}");
@@ -176,6 +178,8 @@ namespace Fakture_Drzavno
                     else if (statusResponse.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var responseObject = JsonSerializer.Deserialize<InvoiceStatusResponse>(statusResponseContents);
+                        responseObject.UpdatedAt = statusSentAtUtc;
+
                         statusApiResponse.Message = "Everything OK. Data written to [dbo].[ERPInvoices].";
 
                         await InvoiceRequestOperations.SaveInvoiceStatusResponse(responseObject);
@@ -186,6 +190,55 @@ namespace Fakture_Drzavno
                     }
 
                     await InvoiceRequestOperations.SaveAPICallResponse(statusApiResponse);
+                    break;
+                case OperationsArgumentValues.PROMENA_STATUSA_NA_DAN:
+                    // Send to API
+                    var statusChangesRequest = new InvoicesChangedOnDateRequest(mainArgument);
+
+                    // THE GET
+                    var statusChangesResponse = await client.PostAsync(statusChangesRequest.URL, null);
+
+                    var statusChangesSentAtUtc = DateTime.Now;
+
+                    var statusChangesResponseContents = await statusChangesResponse.Content.ReadAsStringAsync();
+                    Console.WriteLine($"StatusCode: {statusChangesResponse.StatusCode}");
+
+                    var statusChangesApiResponse = new APIResponse
+                    {
+                        StatusCode = (int)statusChangesResponse.StatusCode,
+                        SentAtUtc = statusChangesSentAtUtc
+                    };
+
+                    if (statusChangesResponse.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        var statusResponseData = JsonSerializer.Deserialize<InvoiceErrorResponse>(statusChangesResponseContents);
+                        Console.WriteLine($"Message: {statusResponseData.Message}");
+                        statusChangesApiResponse.Message = statusResponseData.Message;
+                    }
+                    else if (statusChangesResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        var responseObject = JsonSerializer.Deserialize<List<InvoiceStatusResponseOnDateResponse>>(statusChangesResponseContents);
+                        if (responseObject.Count == 0)
+                        {
+                            Console.WriteLine($"Nije bilo promena na dan {mainArgument}.");
+                        }
+                        else {
+                            foreach (var item in responseObject)
+                            {
+                                item.UpdatedAt = statusChangesSentAtUtc;
+                            }
+                            await InvoiceRequestOperations.SaveMultipleInvoiceStatusResponse(responseObject);
+                        }
+                        
+                        statusChangesApiResponse.Message = "Everything OK. Data written to [dbo].[ERPInvoices].";
+                    }
+                    else if (statusChangesResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        statusChangesApiResponse.Message = $"API couldn't find the endpoint {statusChangesRequest.URL}.";
+                    }
+
+                    await InvoiceRequestOperations.SaveAPICallResponse(statusChangesApiResponse);
+
                     break;
                 default:
                     Console.WriteLine("No operation");

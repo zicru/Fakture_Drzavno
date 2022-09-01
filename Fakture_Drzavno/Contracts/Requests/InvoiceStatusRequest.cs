@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 
-namespace Fakture_Drzavno.Contracts.Models
+namespace Fakture_Drzavno.Contracts.Requests
 {
     internal class InvoiceStatusRequest
     {
